@@ -2,7 +2,7 @@ import React from 'react';
 import Header from '../../components/Header';
 import ShortenerService from '../../services/shortenerService'
 import { Container, InputGroup, FormControl, Button, Alert, Spinner } from 'react-bootstrap';
-import { ContentContainer, Form } from './styles';
+import { ContentContainer, Form, AdsBlock } from './styles';
 
 class HomePage extends React.Component {
   constructor(props) {
@@ -27,7 +27,8 @@ class HomePage extends React.Component {
         const result = await service.generate({ url });
         this.setState({ isLoading: false, code: result.code })
       } catch (error) {
-        this.setState({ isLoading: false, errorMessage: 'Oops, there was an error trying to shorten the URL' })
+        this.setState({ isLoading: false, errorMessage: 'Oops! there was an error trying to shorten the URL' })
+        console.log(error)
       }
     }
   }
@@ -35,8 +36,8 @@ class HomePage extends React.Component {
   copyToClipboard = () => {
     const element = this.inputURL;
     element.select();
-    document.execCommand('copy')
-  }
+    document.execCommand("copy");
+  };
 
   render() {
     const { isLoading, errorMessage, code } = this.state;
@@ -47,7 +48,7 @@ class HomePage extends React.Component {
           <Form
             onSubmit={this.handleSubmit}
           >
-            <InputGroup>
+            <InputGroup className="mb-3" >
               <FormControl
                 placeholder="Enter a URL to shorten"
                 defaultValue=""
@@ -67,7 +68,7 @@ class HomePage extends React.Component {
              ) : ( 
               code && (
                 <>
-                  <InputGroup>
+                  <InputGroup className="mb-3" >
                     <FormControl
                       autoFocus={true}
                       defaultValue={`http://bkopitu.tk/${code}`}
@@ -76,7 +77,7 @@ class HomePage extends React.Component {
                     <InputGroup.Append>
                       <Button 
                         variant="outline-secondary" 
-                        onCLick={() => this.copyToClipboard()}
+                        onClick={() => this.copyToClipboard()}
                       >
                         Copiar
                       </Button>
@@ -88,7 +89,10 @@ class HomePage extends React.Component {
              )}
              {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
           </Form>
-        </ContentContainer>        
+        </ContentContainer>
+        <ContentContainer>
+          <AdsBlock></AdsBlock>
+        </ContentContainer>
       </Container>
     )
   }
